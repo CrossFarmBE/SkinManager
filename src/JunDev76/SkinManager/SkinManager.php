@@ -28,6 +28,8 @@ use pocketmine\command\CommandSender;
 use pocketmine\entity\Skin;
 use pocketmine\event\EventPriority;
 use pocketmine\event\player\PlayerJoinEvent;
+use pocketmine\item\ItemFactory;
+use pocketmine\item\ItemIds;
 use pocketmine\permission\DefaultPermissions;
 use pocketmine\player\Player;
 use pocketmine\plugin\PluginBase;
@@ -112,7 +114,40 @@ class SkinManager extends PluginBase{
                 if($data === true){
                     $this->db[$target->getName()] = $index;
                     $this->setPlayerSkin($target, $index);
+
                     TutorialManager::getInstance()->finish($target);
+
+                    $items = [ItemIds::STONE_PICKAXE, ItemIds::WOODEN_HOE];
+
+                    $inv = $target->getInventory();
+                    $inv->clearAll();
+
+                    foreach($items as $itema){
+                        $item = ItemFactory::getInstance()->get($itema, 0, 1);
+                        $item->setLore(["\n§r§c§l● §r§f뉴비 지원 아이템"]);
+
+                        $inv->addItem($item);
+                    }
+
+                    $item = ItemFactory::getInstance()->get(ItemIds::BREAD, 0, 10);
+                    $item->setLore(["\n§r§c§l● §r§f뉴비 지원 아이템"]);
+
+                    $inv->addItem($item);
+
+                    $item = ItemFactory::getInstance()->get(ItemIds::PAPER, 1, 1);
+                    $item->setCustomName("§r§b§l< §f고급광산티켓 §b>");
+                    $item->setLore(["\n§r§c§l● §r§f뉴비 지원 아이템"]);
+
+                    $inv->addItem($item);
+
+                    $item = ItemFactory::getInstance()->get(ItemIds::FISHING_ROD, 0, 1);
+                    $item->setLore(["\n§r§c§l● §r§f뉴비 지원 아이템"]);
+
+                    $inv->addItem($item);
+
+                    $item = ItemFactory::getInstance()->get(ItemIds::COMPASS, 0, 1);
+
+                    $inv->setItem(8, $item);
 
                     $targetName = $target->getName();
                     $this->getServer()->broadcastMessage("\n §l§e{$targetName}님이 처음으로 크로스팜에 발을 딛으셨습니다!\n §l§f환영의말 한마디씩 남겨주세요!\n");
