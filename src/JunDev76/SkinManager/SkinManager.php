@@ -61,7 +61,7 @@ class SkinManager extends PluginBase{
         $this->getServer()->getPluginManager()->registerEvent(PlayerJoinEvent::class, function(PlayerJoinEvent $ev){
             $player = $ev->getPlayer();
             if(isset($this->db[$player->getName()])){
-                $this->setPlayerSkin($player, $player->getName());
+                $this->setPlayerSkin($player, $this->db[$player->getName()]);
             }
         }, EventPriority::NORMAL, $this);
     }
